@@ -17,7 +17,7 @@ class Queue:
 
 
 # graph = np.zeros((50, 40))
-graph = np.array([[0, 0, 0, 0],
+graph = np.array([[0, 0, 0, 1],
                   [0, 1, 0, 0],
                   [0, 0, 0, 0],
                   [1, 0, 0, 0]])
@@ -28,12 +28,14 @@ graph = np.array([[0, 0, 0, 0],
 
 def neighbours(grid, node):
     output = []
+    print("node" + str(node))
     output.append((node[0], node[1] + 1))
     output.append((node[0], node[1] - 1))
     output.append((node[0] + 1, node[1]))
     output.append((node[0] - 1, node[1]))
-
-    for index, pos in enumerate(output.__reversed__()):
+    print(output)
+    for index in range(output.__len__()-1,-1,-1):
+        pos = output[index]
         if pos[0] < 0 or pos[0] >= grid.__len__() or pos[1] < 0 or pos[1] >= grid[0].__len__() or grid[pos[0]][pos[1]] == 1:
             output.remove(pos)
             print(pos)
