@@ -1,6 +1,6 @@
-import numpy as np
 import collections
 from util.path_utils import neighbours
+
 
 class Queue:
     def __init__(self):
@@ -16,25 +16,22 @@ class Queue:
         return self.elements.popleft()
 
 
-# graph = np.zeros((50, 40))
-graph = np.array([[0, 0, 0, 1],
-                  [0, 1, 0, 0],
-                  [0, 0, 0, 0],
-                  [1, 0, 0, 0]])
-
-
 # Clear = 0
 # Filled = 1
+# Visited = 2
+# Start = 3
+# Goal = 4
+# Path = 5
 
 def bfs_pathing(graph, start, goal, return_animation=False):
-
-    if return_animation:
-        animation = [graph.copy()]
     frontier = Queue()
     frontier.put(start)
     came_from = {}
     came_from[start] = None
-
+    if return_animation:
+        animation = [graph.copy()]
+        animation[0][start[0]][start[1]] = 3
+        animation[0][goal[0]][goal[1]] = 4
     while not frontier.empty():
         current = frontier.get()
 
@@ -42,7 +39,7 @@ def bfs_pathing(graph, start, goal, return_animation=False):
             break
         for next in neighbours(graph, current):
             if next not in came_from:
-                if return_animation:
+                if return_animation and next != goal:
                     graph_copy = animation[animation.__len__() - 1].copy()
                     graph_copy[next[0]][next[1]] = 2
                     animation.append(graph_copy)
@@ -59,7 +56,7 @@ def bfs_pathing(graph, start, goal, return_animation=False):
     if return_animation:
         for pos in path:
             graph_copy = animation[animation.__len__() - 1].copy()
-            graph_copy[pos[0]][pos[1]] = 3
+            graph_copy[pos[0]][pos[1]] = 5
             animation.append(graph_copy)
         return path, animation
     return path
